@@ -19,12 +19,23 @@ st.markdown("""
         color: #1e3a8a; /* Dark Blue */
         font-family: 'Helvetica', sans-serif;
     }
+    /* Metric Cards Styling */
     .stMetric {
         background-color: #ffffff;
         padding: 1rem;
         border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #eee;
     }
+
+    /* Force text inside metrics to be dark (since background is white) */
+    div[data-testid="stMetric"] label {
+        color: #555 !important; /* Label Color */
+    }
+    div[data-testid="stMetric"] div[data-testid="stMetricValue"] {
+        color: #000 !important; /* Value Color */
+    }
+    
     .css-1d391kg {
         background-color: #ffffff;
         padding: 1rem;
