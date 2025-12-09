@@ -9,27 +9,40 @@ st.set_page_config(layout="wide", page_title="Employee Assessment Dashboard", pa
 # Custom CSS for Premium Look
 st.markdown("""
 <style>
-    .reportview-container {
-        background: #f0f2f6;
+    /* Main Background */
+    .stApp {
+        background-color: #f0f2f6;
     }
-    .main .block-container {
-        padding-top: 2rem;
+    
+    /* Metric Cards Styling */
+    div[data-testid="stMetric"], .stMetric {
+        background-color: #ffffff !important;
+        padding: 15px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        border: 1px solid #e0e0e0;
     }
-    h1, h2, h3 {
-        color: #1e3a8a; /* Dark Blue */
-        font-family: 'Helvetica', sans-serif;
+    
+    /* Metric Labels (Small text) */
+    div[data-testid="stMetricLabel"] > label {
+        color: #444444 !important; /* Dark Grey */
+        font-weight: 600;
     }
-    .stMetric {
-        background-color: #ffffff;
-        padding: 1rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    /* Metric Values (Big numbers) */
+    div[data-testid="stMetricValue"] > div {
+        color: #1e3a8a !important; /* Dark Blue */
+        font-weight: bold;
     }
-    .css-1d391kg {
-        background-color: #ffffff;
-        padding: 1rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    /* Chart text global override to ensure it's not white */
+    .js-plotly-plot .plotly .modebar {
+        background-color: white !important;
+    }
+    
+    /* Text in tables/dataframes */
+    .stDataFrame {
+        background-color: white;
     }
 </style>
 """, unsafe_allow_html=True)
