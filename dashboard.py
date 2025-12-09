@@ -9,40 +9,27 @@ st.set_page_config(layout="wide", page_title="Employee Assessment Dashboard", pa
 # Custom CSS for Premium Look
 st.markdown("""
 <style>
-    /* Main Background */
-    .stApp {
-        background-color: #f0f2f6;
+    .reportview-container {
+        background: #f0f2f6;
     }
-    
-    /* Metric Cards Styling */
-    div[data-testid="stMetric"], .stMetric {
-        background-color: #ffffff !important;
-        padding: 15px !important;
-        border-radius: 10px !important;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        border: 1px solid #e0e0e0;
+    .main .block-container {
+        padding-top: 2rem;
     }
-    
-    /* Metric Labels (Small text) */
-    div[data-testid="stMetricLabel"] > label {
-        color: #444444 !important; /* Dark Grey */
-        font-weight: 600;
+    h1, h2, h3 {
+        color: #1e3a8a; /* Dark Blue */
+        font-family: 'Helvetica', sans-serif;
     }
-    
-    /* Metric Values (Big numbers) */
-    div[data-testid="stMetricValue"] > div {
-        color: #1e3a8a !important; /* Dark Blue */
-        font-weight: bold;
+    .stMetric {
+        background-color: #ffffff;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    
-    /* Chart text global override to ensure it's not white */
-    .js-plotly-plot .plotly .modebar {
-        background-color: white !important;
-    }
-    
-    /* Text in tables/dataframes */
-    .stDataFrame {
-        background-color: white;
+    .css-1d391kg {
+        background-color: #ffffff;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -118,7 +105,6 @@ with col_team1:
     fig_team = px.box(filtered_df, x="Team", y="Weighted Score", points="all", color="Team",
                       title="Distribution of Scores by Team",
                       color_discrete_sequence=px.colors.qualitative.Prism)
-    fig_team.update_layout(template="plotly_white", font=dict(color="black"))
     st.plotly_chart(fig_team, use_container_width=True)
 
 with col_team2:
@@ -136,14 +122,7 @@ st.subheader("📈 Performance Leaderboard")
 fig_leader = px.bar(filtered_df.sort_values('Weighted Score'), x="Weighted Score", y="Employee Name", orientation='h',
                     color="Team", text="Weighted Score", title="Employees Ranked by Weighted Score",
                     color_discrete_sequence=px.colors.qualitative.Safe)
-
-# Fix contrast: Black text, outside bars, bold
-fig_leader.update_traces(texttemplate='%{text:.2f}', textposition='outside', 
-                         textfont=dict(color='black', size=14, weight='bold'))
-fig_leader.update_layout(height=500, template="plotly_white", 
-                         xaxis=dict(showgrid=True, range=[0, 5.5]),
-                         font=dict(color="black"))
-
+fig_leader.update_layout(height=500)
 st.plotly_chart(fig_leader, use_container_width=True)
 
 st.markdown("---")
@@ -154,7 +133,7 @@ fig_salary = px.scatter(filtered_df, x="Weighted Score", y="Salary Increase", si
                         hover_data=["Employee Name"], title="Salary Increase vs Performance Score",
                         labels={"Salary Increase": "Recommended Increase (%)"},
                         size_max=20)
-fig_salary.update_layout(template="plotly_white", font=dict(color="black"))
+# Add a trendline? Scatter is better to show correlation
 st.plotly_chart(fig_salary, use_container_width=True)
 
 
@@ -171,7 +150,6 @@ if selected_employee == "All":
     team_avg_melted = team_avg.melt(id_vars='Team', var_name='Category', value_name='Score')
     fig_radar_team = px.line_polar(team_avg_melted, r='Score', theta='Category', color='Team', line_close=True,
                                    title="Average Capabilities by Team")
-    fig_radar_team.update_layout(template="plotly_white", font=dict(color="black"))
     st.plotly_chart(fig_radar_team, use_container_width=True)
 else:
     emp_data = df[df['Employee Name'] == selected_employee].iloc[0]
@@ -203,8 +181,7 @@ else:
             name=emp_data['Employee Name']
         ))
         fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 5])), showlegend=False, 
-                                title=f"Competency Profile: {emp_data['Employee Name']}",
-                                template="plotly_white", font=dict(color="black"))
+                                title=f"Competency Profile: {emp_data['Employee Name']}")
         st.plotly_chart(fig_radar, use_container_width=True)
 
     # Plot 4: Management Notes
